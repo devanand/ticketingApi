@@ -1,0 +1,29 @@
+New log file opened at Thu Dec 17 00:32:10 IST 2015 by 6225@devanands-MacBook-Pro.local
+Taking next connection to: 56381
+New client attempting to connect on port: 56382-56381
+  Address = /192.168.1.5:56381
+This client on port 56382 has uuid 82427476-4ee6-4610-a4c5-ab4912b4a4d1 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-82427476-4ee6-4610-a4c5-ab4912b4a4d1
+Taking next connection to: 56381
+New client attempting to connect on port: 56383-56381
+  Address = /192.168.1.5:56381
+Handshake exception on socket: 56383
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.net.SocketException: Connection reset
+	at java.net.SocketInputStream.read(SocketInputStream.java:209)
+	at java.net.SocketInputStream.read(SocketInputStream.java:141)
+	at java.io.BufferedInputStream.fill(BufferedInputStream.java:246)
+	at java.io.BufferedInputStream.read(BufferedInputStream.java:265)
+	at java.io.DataInputStream.readInt(DataInputStream.java:387)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 56381
+New client attempting to connect on port: 56384-56381
+  Address = /192.168.1.5:56381
+This client on port 56384 has uuid 7f841f72-c7ee-426e-8bd6-aa120324fd2d configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-82427476-4ee6-4610-a4c5-ab4912b4a4d1, activator-7f841f72-c7ee-426e-8bd6-aa120324fd2d
+Taking next connection to: 56381
