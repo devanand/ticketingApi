@@ -1,4 +1,293 @@
-This is your new Play application
-=================================
+Ticketing REST API documentation
 
-This file will be packaged with your application, when using `activator dist`.
+This document describes the REST API and resources provided by Ticketing. This is for developers who want to integrate the our Ticketing system into their application.
+
+Ticketing REST API provides access to the resources via URI paths. To use the REST API, your application needs to make an HTTP request and parse the response. The response format is JSON. The API supports POST method.
+
+Because the REST API is built on open standards, you can use any web development language to access the API.
+
+Structure of the REST URIs
+
+http://host:port/context
+
+Attributes of a ticket
+
+ticketId – Unique id of a ticket. On logging, the server returns it
+agentId – This is the id of the agent who creates the ticket. If the agent does not exist already the 	     ticket will not be created
+comments – This explains the trouble
+status – Three permissible statuses. 1 denotes NEW, 2 denotes Open, 3 denotes Closed
+customerId – Customer's phone number.
+AssignedTo – This closes the ticket.
+GeneratedTime –  Time of ticket generation. Follows unix time stamp.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API Calls
+
+1. Creating a ticket
+
+Method: POST
+URL: /generate
+
+Parameter Example
+
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+Acceptable request representation: application/json
+
+Available response representation: application/json
+
+
+
+Available response representations
+200 – on successful generation of ticket returns
+
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+404 – If the parameters cannot be converted returns
+	“Ticket cannot be saved”
+
+500 – Ticket is closed instead of new
+
+
+
+
+
+
+
+
+
+
+2. Update ticket
+
+Method: POST
+URL: /update
+
+Parameter Example
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+Acceptable request representation: application/json
+
+Available response representations: application/json
+
+200 – on successful updation of ticket returns
+
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+400 – Ticket's mandatory arguments are not correct
+
+500 – Trying to update a closed ticket 
+
+400 – Ticket cannot be updated
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3. Open a closed ticket
+
+Method: POST
+URL: /reopen
+
+Parameter Example
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+Acceptable request representation: application/json
+
+Available response representations: application/json
+
+200 – On successful reopening of the ticket returns
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+400 – Json cannot be converted to ticket object
+
+500 – Internal server error
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+4. Assign the ticket
+ 
+Method: POST
+URL: /assign
+
+Parameter Example
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+ Acceptable request representation: application/json
+
+Available response representations: application/json
+
+200 – On successful reopening of the ticket returns
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+400 – If the request body is empty or the assigned to field is empty
+
+500 – Internal server error
+
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"generatedTime":1450530019291
+	}
+
+
+
+
+
+
+
+
+5. Get tickets
+    
+Method: POST
+URL: /assign
+
+Parameter 
+All the attributes are optional. If there is no parameter or the map is empty, returns every ticket created by the agent.
+	{
+		"ticketId":"T2",
+		"agentId":"gg2",
+		"comments":"This is a sample ticket",
+		"status":1,
+		"customerId":"C1",
+		"assignedTo":"",
+		"timeStart":”1450530019291”
+		“timeEnd”:”1450530019291”
+	}
+
+
+Note: Send time start and time end as String not a long value
+
+200 – If there is no tickets for the criteria
+
+200 (Returns tickets as a list in no particular order)
+	[1]
+	   0:  {
+			"ticketId": "T2"
+			"agentId": "gg2"
+			"comments": "This is a sample ticket"
+			"status": 1
+			"customerId": "C1"
+			"assignedTo": ""
+			"generatedTime": 1450530019291
+		}
+
+400 – For bad request
+
+500 – Internal server error

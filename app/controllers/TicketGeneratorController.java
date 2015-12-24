@@ -36,13 +36,13 @@ public class TicketGeneratorController extends Controller {
 			
 		} catch(TicketGenerationException t) {
 			t.printStackTrace();
-			status = status(500, "Ticket id already exists");
+			status = status(400, "Ticket id already exists");
 		} catch(IllegalArgumentException e) {
 			e.printStackTrace();
-			status = badRequest(e.getMessage());
+			status = badRequest("Ticket cannot be saved");
 		} catch (Exception e) {
 			e.printStackTrace();
-			status = badRequest("This is a bad request");
+			status = status(500, "This is a bad request");
 		}
 		return status;
 	}
@@ -65,7 +65,7 @@ public class TicketGeneratorController extends Controller {
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
-			status = status(500, "Internal error");
+			status = badRequest("Ticket json format is bad");
 		}
 		
 		return status;
@@ -113,31 +113,28 @@ public class TicketGeneratorController extends Controller {
 				status = badRequest("Request body is empty");
 			}
 			else {
-				Map<String, String> customerIdMap = Util.convertFromJson(json, Map.class);
+				Map<String, String> criteria = Util.convertFromJson(json, Map.class);
 				
-				if(customerIdMap == null || customerIdMap.isEmpty()) {
-					status = badRequest("Request body is empty");
-					return status;
-				}
+//				if(criteria == null || criteria.isEmpty()) {
+//					status = badRequest("Request body is empty");
+//					return status;
+//				}
 				
-				String customerId = customerIdMap.get("customerId");
-				if(customerId == null || customerId.isEmpty()) {
-					status = badRequest("Request body does not contain the expected value: expected{customerId:{id}}");
-				} else {
-					List <TicketJdo> ticketList = CustomerJdo.getCustomerTickets(customerId);
+				List <TicketJdo> ticketList = CustomerJdo.getCustomerTickets(criteria);
+				if(ticketList == null || ticketList.isEmpty()) {
+					status(200, "No tickets for the customer");
 					
-					if(ticketList == null || ticketList.isEmpty()) {
-						status(200, "No tickets for the customer");
-						
-					} else {
-						status = ok(Json.toJson(ticketList));
-					}
+				} else {
+					status = ok(Json.toJson(ticketList));
 				}
 			}
+		} catch(NullPointerException e) {
+			e.printStackTrace();
+			status = status(500, "There is an null exception somewhere");
 		} catch(Exception e) {
 			e.printStackTrace();
-			status = status(500, "Internal error");
-		}
+			status = status(500, e.getMessage());
+		} 
 		
 		return status;
 	}

@@ -139,7 +139,7 @@ public class TicketJdo {
 		return null;
 	}
 	
-	public boolean reopenTicket(TicketJdo ticket) {
+	public boolean reopenTicket(TicketJdo ticket) throws Exception {
 		ticket.setStatus(Status.OPEN.ordinal());
 		return saveTicket(ticket);
 	}
