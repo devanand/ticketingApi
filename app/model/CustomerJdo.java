@@ -45,6 +45,9 @@ public class CustomerJdo {
 		
 		
 		for(String key:conditions.keySet()) {
+			if(conditions.get(key) == null || conditions.get(key).trim() == "") {
+				continue;
+			}
 			if(key.equals("timeStart")) {
 				q=q.field("generatedTime").greaterThanOrEq(Long.parseLong(conditions.get(key)));
 			} else if(key.equals("timeEnd")) {

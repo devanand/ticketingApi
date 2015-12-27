@@ -41,7 +41,7 @@ public class TicketGeneratorController extends Controller {
 			e.printStackTrace();
 			status = badRequest("Ticket cannot be saved");
 		} catch (Exception e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			status = status(500, "This is a bad request");
 		}
 		return status;
